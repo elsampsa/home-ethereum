@@ -1,0 +1,10 @@
+[Unit]
+Description=Ethereum go client
+
+[Service]
+Type=simple
+ExecStart=%h/go-ethereum/build/bin/geth --syncmode=full --gcmode=full --cache=2048 --maxpeers=50 
+
+[Install]
+WantedBy=default.target
+
