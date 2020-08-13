@@ -107,7 +107,7 @@ Your SDD is encrypted, but it is still a good idea to have an extra layer of sec
 ./mount_secret.bash
 ```
 
-You can run this script to daemonize geth as a systemctl background process:
+You can use this script to daemonize geth as a systemctl background process.  Run this script **only once**:
 ```
 ./install_daemon.bash
 ```
