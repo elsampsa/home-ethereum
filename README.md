@@ -95,9 +95,12 @@ echo "export PATH=\$PATH:/usr/local/go/bin" >> $HOME/.profile
 
 ## Install geth
 
-Download from:
+Git clone, checkout a nice version & compile:
 ```
 git clone https://github.com/ethereum/go-ethereum.git
+cd go-ethereum
+git checkout v1.9.24
+make
 ```
 
 ## Use the scripts
@@ -180,6 +183,13 @@ In that example case, the max transaction fee is:
 ```
 120 000 * 184 Gwei => 120E+3 * 184E+9 wei * 1E-18 wei / eth  = 22080 E-6 eth ~ 0.02 eth
 ```
+
+## Problems
+
+Some problems I encountered.
+
+- As described in [this ticket](https://github.com/ethereum/go-ethereum/issues/21825).  Fix: updated geth to 1.9.24, cleared ``.ethereum/geth/ethash/`` and restarted. 
+
 
 ## Copyright
 
