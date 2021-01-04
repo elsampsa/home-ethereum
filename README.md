@@ -133,7 +133,7 @@ systemctl --user start geth.service
 
 Check out the logs to see what geth is doing with this:
 ```
-./logs.bash
+./ethlogs.bash
 ```
 
 To stop geth, create a backup copy of the blockchain to an external HDD and to autostart geth automatically, use this script:
@@ -147,6 +147,13 @@ Start the JS console:
 ```
 ./console.bash
 ```
+
+To check if everything is running as it should, type:
+```
+net.peerCount
+```
+It should show 50 peers.s
+
 
 ## JS console quickstart
 
