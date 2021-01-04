@@ -52,7 +52,8 @@ Bookmarks checklist for firefox:
 
 Set a constant IP address for the laptop in your home LAN.
 
-Configure your LAN router with port forwarding from port 30303 to the constant IP address of the laptop.  This is essential, in order to allow enough ethereum clients to connect to your laptop.  Otherwise your syncing process will slow down considerably.
+Configure your LAN router to forward ports 30303 and 30301 to the constant IP address of the laptop.
+This is essential, in order to allow enough ethereum clients to connect to your laptop.  Otherwise your syncing process will slow down considerably.
 
 
 ## Tune your system
