@@ -86,11 +86,20 @@ sudo swapon --show
 
 ## Install go
 
-Install go from here: https://golang.org/doc/install?download=go1.14.6.linux-amd64.tar.gz
+Download a recent version of go from [here](https://golang.org/dl/)
+
+Suppose that goes to your ``Downloads/`` folder.
+
+``tar xvf``that file and go to directory ``go/src``
 
 Adjust your environment to find the go executable:
 ```
-echo "export PATH=\$PATH:/usr/local/go/bin" >> $HOME/.profile
+echo "export PATH=$PATH:[YOUR HOMEDIR]/Downloads/go/bin" >> $HOME/.profile
+```
+
+See if it works:
+```
+go version
 ```
 
 ## Install geth
@@ -99,7 +108,7 @@ Git clone, checkout a nice version & compile:
 ```
 git clone https://github.com/ethereum/go-ethereum.git
 cd go-ethereum
-git checkout v1.9.24
+git checkout v1.9.25
 make
 ```
 
