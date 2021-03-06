@@ -21,6 +21,9 @@ The SSD I'm using is a "Crucial BX500" 2TB drive, with an off-the-shelf price of
 
 I also got a "Seagate Backup Plus Portable" 4TB external HDD drive for backing up the blockchain (~ 130 EUR).  This way I never have to download the god'damn thing again if something goes wrong.
 
+**Backup is important!**  I have encountered many times a situations where the whole blockchain goes sour - due to bugs in geth or because of dirty shutdowns.  In these situations, geth
+wants to reset the blockchain or it segfaults.  This can be avoided by recovering a "clean" blockchain from your backup HDD.
+
 Amount of RAM in the laptop is ~ 12 GB.
 
 
@@ -152,7 +155,7 @@ To check if everything is running as it should, type:
 ```
 net.peerCount
 ```
-It should show 50 peers.s
+It should show 50 peers.
 
 
 ## JS console quickstart
@@ -206,7 +209,9 @@ In that example case, the max transaction fee is:
 Some problems I encountered.
 
 - As described in [this ticket](https://github.com/ethereum/go-ethereum/issues/21825).  Fix: updated geth to 1.9.24, cleared ``.ethereum/geth/ethash/`` and restarted. 
-
+- Geth went completely crashy, see [here](https://github.com/ethereum/go-ethereum/issues/22440).  Maybe due to dirty shutdowns.  Recovered  the blockchain from the external HDD and updated to geth 1.10, which
+solved the issue.
+- As per today, 6.3.2020, geth is running so hot sometimes, that the whole laptop freezes for a few seconds.  This is also manifested by the high peaks in CPU usage - several CPUs go 100%.
 
 ## Copyright
 
