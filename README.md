@@ -2,9 +2,11 @@
 
 My checklist and scripts for running [go ethereum client](https://github.com/ethereum/go-ethereum), aka "geth" on a laptop @ the comfort of your home.
 
-We are setting up a "full node" here.  I recommend skipping "fast" and "light" sync.  I personally never got the "fast" sync working (maybe related to [this](https://github.com/ethereum/go-ethereum/issues/16796)) and anyway, for the sake of the ethereum network health, everyone should go full node.
+We are setting up a "full node" here.  I recommend skipping "fast" and "light" sync.  I personally never got the "fast" sync working (maybe related to [this](https://github.com/ethereum/go-ethereum/issues/16796)).
 
-As per today (13.8.2020), it took more than a month to sync and reach the last block, while the blockchain takes around 850 GB of space.
+These instructions are currently for geth **version 1.10**.
+
+As per today 13.8.2020, it took more than a month to sync and reach the last block, while the blockchain takes around 850 GB of space.
 
 
 ## The Hardware
@@ -108,11 +110,11 @@ go version
 
 ## Install geth
 
-Git clone, checkout a nice version & compile:
+Git clone, checkout the correct version & compile:
 ```
 git clone https://github.com/ethereum/go-ethereum.git
 cd go-ethereum
-git checkout v1.9.25
+git checkout release/1.10
 make
 ```
 
