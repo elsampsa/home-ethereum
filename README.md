@@ -4,10 +4,11 @@ My checklist and scripts for running [go ethereum client](https://github.com/eth
 
 We are setting up a "full node" here.  I recommend skipping "fast" and "light" sync.  I personally never got the "fast" sync working (maybe related to [this](https://github.com/ethereum/go-ethereum/issues/16796)).
 
-These instructions are currently for geth **version 1.10**.
+These instructions are currently for geth **version 1.10**.  For release notes, see [here](https://github.com/ethereum/go-ethereum/releases/tag/v1.10.0).
+See also [this blog](https://blog.ethereum.org/2021/03/03/geth-v1-10-0/).
 
-As per today 13.8.2020, it took more than a month to sync and reach the last block, while the blockchain takes around 850 GB of space.
-
+- As per 13.8.2020, it took more than a month to sync and reach the last block, while the blockchain takes around 850 GB of space.
+- As per 9.3.2021, the blockchain takes 1.2 TB of space.
 
 ## The Hardware
 
