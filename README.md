@@ -126,7 +126,7 @@ Your SDD is encrypted, but it is still a good idea to have an extra layer of sec
 ./mount_secret.bash
 ```
 
-You can use this script to daemonize geth as a systemctl background process.  Run this script **only once**:
+You can use this script to daemonize geth as a systemctl background process.  You should or should not do this.  Run this script **only once**:
 ```
 ./install_daemon.bash
 ```
@@ -176,6 +176,7 @@ personal.unlockAccount(personal.listAccounts[0],"PASSPHRASE")
 Balances, etc.
 ```
 eth.getBalance(personal.listAccounts[0])
+web3.fromWei(eth.getBalance(personal.listAccounts[0]),'ether')
 ```
 
 Check sync state:
@@ -206,6 +207,17 @@ In that example case, the max transaction fee is:
 ```
 120 000 * 184 Gwei => 120E+3 * 184E+9 wei * 1E-18 wei / eth  = 22080 E-6 eth ~ 0.02 eth
 ```
+
+## GnuPG etc.
+
+The best cryptoexchange - Kraken - only sends you encrypted emails.
+
+- Install GnuPG and maybe ``kgpg`` (GUI for GnuPG) as well.
+- If you have one, transfer your ``.gnupg`` folder with the [correct permissions](https://superuser.com/questions/954509/what-are-the-correct-permissions-for-the-gnupg-enclosing-folder-gpg-warning)
+- (or just the [subkeys](https://wiki.debian.org/Subkeys))
+- Install thunderbird
+- Install thunderbird extension: enigmail
+- If enigmail complains, you have the wrong keys.  List keys with ``gpg --list-keys --with-colons``
 
 ## Problems
 
