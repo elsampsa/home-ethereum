@@ -236,10 +236,29 @@ Sampsa Riikonen, 2020
 
 WTFPL
 
+## Extras
 
+Keeping up with several cryptos on the same laptop: one unix user per coin.
 
+Say, dogecoin:
+```
+sudo adduser doge
+```
 
+As usual, copy main user's ``id_rsa.pub`` to user ``doge`` & set [correct rights](https://community.perforce.com/s/article/6210):
+```
+chmod 700 .ssh
+chmod 600 .ssh/authorized_keys
+```
 
+Keep different users isolated with [this](https://askubuntu.com/questions/642266/how-can-i-prevent-other-users-from-accessing-my-home-directory), i.e:
+```
+sudo chmod 0750 /home/ether
+sudo chmod 0750 /home/doge
+```
+etc.
 
-
-
+Switch between users with
+```
+ssh -XY doge@localhost
+```
