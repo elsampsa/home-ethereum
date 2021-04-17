@@ -5,11 +5,13 @@ My checklist and scripts for running [go ethereum client](https://github.com/eth
 We are setting up a "full node" here.  I recommend skipping "fast" and "light" sync.  I personally never got the "fast" sync working (maybe related to [this](https://github.com/ethereum/go-ethereum/issues/16796)).
 However, that experience might be severly outdated and applicable only to older geth versions.
 
-These instructions are currently for geth **version v1.10.1** ("berlin").  For release notes, see [here](https://blog.ethereum.org/2021/03/08/ethereum-berlin-upgrade-announcement/).
+These instructions are currently for geth **version v1.10.1** ("berlin").  For release notes of that version, see [here](https://blog.ethereum.org/2021/03/08/ethereum-berlin-upgrade-announcement/).
 
 - As per 13.8.2020, it took more than a month to sync and reach the last block, while the blockchain takes around 850 GB of space.
 - As per 9.3.2021, the blockchain takes ~ 1.2 TB of space.
 - As per 17.4.2021, the blockchain takes ~ 1.3 TB of space.
+
+![image](inaction.png)
 
 ## The Hardware
 
@@ -51,6 +53,10 @@ Laptops with ECC are particularly difficult to come by/expensive, see for exampl
 
 For small, compact & bang-for-the-bucks server, google for example "HPE Proliant Microserver Gen 10".  If you want to DIY, consider Supermicro mini-ITX motherboards.
 
+To see if your system features ram error correction, use this command:
+```
+sudo dmidecode -t memory
+```
 
 ## Install Kubuntu
 
