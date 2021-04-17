@@ -3,14 +3,19 @@
 My checklist and scripts for running [go ethereum client](https://github.com/ethereum/go-ethereum), aka "geth" on a laptop @ the comfort of your home.
 
 We are setting up a "full node" here.  I recommend skipping "fast" and "light" sync.  I personally never got the "fast" sync working (maybe related to [this](https://github.com/ethereum/go-ethereum/issues/16796)).
+However, that experience might be severly outdated and applicable only to older geth versions.
 
-These instructions are currently for geth **version 1.10**.  For release notes, see [here](https://github.com/ethereum/go-ethereum/releases/tag/v1.10.0).
-See also [this blog](https://blog.ethereum.org/2021/03/03/geth-v1-10-0/).
+These instructions are currently for geth **version v1.10.1** ("berlin").  For release notes, see [here](https://blog.ethereum.org/2021/03/08/ethereum-berlin-upgrade-announcement/).
 
 - As per 13.8.2020, it took more than a month to sync and reach the last block, while the blockchain takes around 850 GB of space.
-- As per 9.3.2021, the blockchain takes 1.2 TB of space.
+- As per 9.3.2021, the blockchain takes ~ 1.2 TB of space.
+- As per 17.4.2021, the blockchain takes ~ 1.3 TB of space.
 
 ## The Hardware
+
+### My "trash" setup
+
+*I did this*
 
 You don't want to recycle your old "ultrabook" laptop for this one, as they typically have an expensive NVME circuit working as the SSD drive, and no physical space / slot for inserting "commodity" SSD drives.
 
@@ -28,6 +33,23 @@ I also got a "Seagate Backup Plus Portable" 4TB external HDD drive for backing u
 wants to reset the blockchain or it segfaults.  This can be avoided by recovering a "clean" blockchain from your backup HDD.
 
 Amount of RAM in the laptop is ~ 12 GB.
+
+### A More Serious Setup with ECC
+
+*I might do this in the future*
+
+Instead of using a retro / vintage laptop, like I'm doing here, or some other garbage-like-hardware you have lying around, you might want to consider
+a server with ECC memory error correction.  Read more about it [here](https://arstechnica.com/gadgets/2021/01/linus-torvalds-blames-intel-for-lack-of-ecc-ram-in-consumer-pcs/).
+
+When there are corruptions due to random bit flips, under normal consumer user-case scenarios, your computer might crash (just boot it again), or a single photo of yours (out of thousands) might get corrupted, 
+so no big deal, but for a blockchain, a corrupted bit might get in there (after the block has been validated), corrupting the whole thing.
+There are some rare occacions where users [have reported such behaviour](https://github.com/ethereum/go-ethereum/issues/20478).
+
+For ECC corrections to work, the memory, processor and motherboard, all have to support the ECC feature.
+Laptops with ECC are particularly difficult to come by/expensive, see for example Lenovo Thinkpad P70 with Intel Xeon E3-family processors
+(a tip: googling a processor model name will take you to Intel's specifications that indicate if that processor supports ECC or not). 
+
+For small, compact & bang-for-the-bucks server, google for example "HPE Proliant Microserver Gen 10".  If you want to DIY, consider Supermicro mini-ITX motherboards.
 
 
 ## Install Kubuntu
@@ -111,22 +133,57 @@ go version
 
 ## Install geth
 
-Git clone, checkout the correct version & compile:
+Git clone & checkout the correct version & compile:
 ```
 git clone https://github.com/ethereum/go-ethereum.git
 cd go-ethereum
-git checkout release/1.10
+git checkout v1.10.1
 make
 ```
 
+
+## Scripts
+
+These have no warranty!  :)
+```
+.
+├── clean_dangerous.bash    # wipes out all geth data
+├── console.bash            # start javascript console
+├── deinstall_daemon.bash   # deinstalls geth systemd daemon
+├── ethlogs.bash            # follows systemd logs
+├── geth.service            
+├── install_daemon.bash     # install geth as a systemd daemon
+├── loader.js
+├── mount_secret.bash       # mount encrypted encfs directory
+├── recover.bash            # recover with rsync from external disk # WARNING: OVERWRITERS your .ethereum folder
+|                             => keystore/accounts.  Write a better version yourself if you feel like it
+├── rungeth.bash            # run geth interactively
+├── rungeth_verbose.bash
+├── save2.bash              # just rsync to external disk
+├── save.bash               # stop geth daemon, rsync to external disk # EDIT THIS FILE
+└── somelogs.bash           # shows some geth daemon logs
+```
+
 ## Use the scripts
+
+### Encfs
 
 Your SDD is encrypted, but it is still a good idea to have an extra layer of security with encfs.  This way you will also have a directory with encrypted files that you can copy around.  This script will mount you secret directory to "crypt/":
 ```
 ./mount_secret.bash
 ```
 
-You can use this script to daemonize geth as a systemctl background process.  You should or should not do this.  Run this script **only once**:
+### Run geth interactively
+
+```
+./rungeth.bash
+```
+
+### Running geth as a daemon
+
+In the case you want to run geth as a systemd daemon.  I used to do this, but currently I actually prefer to run it interactively in a separate terminal.
+
+You can use this script to daemonize geth as a systemctl background process. Run this script **only once**:
 ```
 ./install_daemon.bash
 ```
@@ -149,6 +206,8 @@ To stop geth, create a backup copy of the blockchain to an external HDD and to a
 however, remember to edit that script first!
 
 
+### JS console quickstart
+
 Start the JS console:
 ```
 ./console.bash
@@ -159,9 +218,6 @@ To check if everything is running as it should, type:
 net.peerCount
 ```
 It should show 50 peers.
-
-
-## JS console quickstart
 
 List your accounts with:
 ```
@@ -226,7 +282,8 @@ Some problems I encountered.
 - As described in [this ticket](https://github.com/ethereum/go-ethereum/issues/21825).  Fix: updated geth to 1.9.24, cleared ``.ethereum/geth/ethash/`` and restarted. 
 - Geth went completely crashy, see [here](https://github.com/ethereum/go-ethereum/issues/22440).  Maybe due to dirty shutdowns.  Recovered  the blockchain from the external HDD and updated to geth 1.10, which
 solved the issue.
-- As per today, 6.3.2020, geth is running so hot sometimes, that the whole laptop freezes for a few seconds.  This is also manifested by the high peaks in CPU usage - several CPUs go 100%.
+- As per today, 6.3.2021, geth (1.10) is running so hot sometimes, that the whole laptop freezes for a few seconds.  This is also manifested by the high peaks in CPU usage - several CPUs go 100%.
+- 17.4.2021: needed to upgrade to "berlin" (v.1.10.1), otherwise got [this error](https://github.com/ethereum/go-ethereum/issues/22689)
 
 ## Copyright
 
