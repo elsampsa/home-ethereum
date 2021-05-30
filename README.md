@@ -3,7 +3,7 @@
 My checklist and scripts for running [go ethereum client](https://github.com/ethereum/go-ethereum), aka "geth" on a laptop @ the comfort of your home.
 
 We are setting up a "full node" here.  I recommend skipping "fast" and "light" sync.  I personally never got the "fast" sync working (maybe related to [this](https://github.com/ethereum/go-ethereum/issues/16796)).
-However, that experience might be severly outdated and applicable only to older geth versions.
+However, that experience might be severely outdated and applicable only to older geth versions.
 
 These instructions are currently for geth **version v1.10.1** ("berlin").  For release notes of that version, see [here](https://blog.ethereum.org/2021/03/08/ethereum-berlin-upgrade-announcement/).
 
@@ -79,7 +79,11 @@ Bookmarks checklist for firefox:
 
 - Your favorite exchanges
 - https://etherscan.io/
-- https://ethgasstation.info/
+
+For eth gas price estimation, look at these:
+
+- [https://etherscan.io/gastracker](https://etherscan.io/gastracker)
+- [https://www.etherchain.org/api/gasPriceOracle](https://www.etherchain.org/api/gasPriceOracle)
 
 
 ## Networking
@@ -225,6 +229,13 @@ net.peerCount
 ```
 It should show 50 peers.
 
+For full manage account docs, see [here](https://geth.ethereum.org/docs/interface/managing-your-accounts)
+
+Create account with:
+```
+personal.newAccount("PASSPHRASE")
+```
+
 List your accounts with:
 ```
 personal.listAccounts
@@ -258,9 +269,8 @@ checkAllBalances()
 
 Send ethers with
 ```
-eth.sendTransaction({from: "...",to: "...",value: web3.toWei(0.01, "ether"), gas: 120000, gasPrice: web3.toWei(184, "gwei")});
+eth.sendTransaction({from: "...", to: "...", value: web3.toWei(0.01, "ether"), gas: 120000, gasPrice: web3.toWei(184, "gwei")});
 ```
-
 - one wei = E-18 Ether
 - gas sets the permitted max amount of gas to be burned for this transaction
 - gasPrice sets the unit for gas
@@ -269,6 +279,18 @@ In that example case, the max transaction fee is:
 ```
 120 000 * 184 Gwei => 120E+3 * 184E+9 wei * 1E-18 wei / eth  = 22080 E-6 eth ~ 0.02 eth
 ```
+
+If you accidentally set too low gas fees, resulting in a forever-queueing tx, you can "cancel" the tx with:
+```
+eth.sendTransaction({from: '<YOUR_ACCOUNT>', to: '<YOUR_ACCOUNT>', value: 0, gasPrice: <NEW_HIGHER_GAS_PRICE>, gasLimit: 120000, nonce: '<NONCE_OF_YOUR_PENDING_TRANSACTION>'});
+```
+
+You can get that mentioned nonce from the list of your pending transactions:
+```
+eth.pendingTransactions
+```
+
+For normal tx operations (no complicated/costly smart contracts involved), a gaslimit of 24000 units is a good value. 
 
 ## GnuPG etc.
 
@@ -293,7 +315,7 @@ solved the issue.
 
 ## Copyright
 
-Sampsa Riikonen, 2020
+Sampsa Riikonen, 2020-2021
 
 ## License
 
