@@ -1,15 +1,17 @@
 # Home Ethereum
 
+*If you don't hold it, you don't own it*
+
+-- an american proverb
+
 My checklist and scripts for running [go ethereum client](https://github.com/ethereum/go-ethereum), aka "geth" on a laptop @ the comfort of your home.
 
-We are setting up a "full node" here.  I recommend skipping "fast" and "light" sync.  I personally never got the "fast" sync working (maybe related to [this](https://github.com/ethereum/go-ethereum/issues/16796)).
-However, that experience might be severely outdated and applicable only to older geth versions.
+The current version you should use is **v1.10.12**.  For release notes, see [here](https://blog.ethereum.org/2021/03/08/ethereum-berlin-upgrade-announcement/).
 
-These instructions are currently for geth **version v1.10.1** ("berlin").  For release notes of that version, see [here](https://blog.ethereum.org/2021/03/08/ethereum-berlin-upgrade-announcement/).
-
-- As per 13.8.2020, it took more than a month to sync and reach the last block, while the blockchain takes around 850 GB of space.
-- As per 9.3.2021, the blockchain takes ~ 1.2 TB of space.
-- As per 17.4.2021, the blockchain takes ~ 1.3 TB of space.
+- 13.8.2020, a full sync took more than a month to sync and reach the last block, while the blockchain takes around 850 GB of space.
+- 9.3.2021, the blockchain takes ~ 1.2 TB of space.
+- 17.4.2021, the blockchain takes ~ 1.3 TB of space.
+- 20.1.2022, removed blockchain & did a "snap" sync.  It was blazing fast & now blockchain just needs a few hundred gigas!  Using txlookuplimit=0 was a bad idea: it blows up the state trie
 
 ![image](inaction.png)
 
@@ -58,6 +60,14 @@ To see if your system features ram error correction, use this command:
 sudo dmidecode -t memory
 ```
 
+### Backup connection
+
+Sometimes your node will be offline or it takes time to reach the synced state.  So you need a backup connection.
+
+Head to [Infura](https://infura.io/) and open an account.
+
+You can then interact with the blockchain, send transactions by signing them with your account keys, etc., remotely.
+
 ## Install Kubuntu
 
 Set up Ubuntu 18.04 LTS (or similar).
@@ -66,7 +76,7 @@ Remember to choose the option to encrypt your drive!  You don't want all that et
 
 Install the KDE desktop environment with:
 ```
-sudo apt-get update && sudo apt-get install kubuntu-desktop
+sudo apt-get update && sudo apt-get install kubuntu-desktop python3-venv
 sudo apt-get upgrade
 ```
 
@@ -77,7 +87,8 @@ Disable lid-close auto-suspend etc. from power management.  This way you can jus
 
 Bookmarks checklist for firefox:
 
-- Your favorite exchanges
+- https://blog.ethereum.org/ : its important to follow the latest news & upgrades & hard forks here!
+- Your favorite exchanges, say, https://kraken.com
 - https://etherscan.io/
 
 For eth gas price estimation, look at these:
@@ -104,6 +115,15 @@ sudo apt-get install encfs gnumeric net-tools tree emacs
 Disable auto-updates:
 ```
 sudo dpkg-reconfigure -plow unattended-upgrades
+```
+
+Check that your ``/etc/ssh/sshd_config`` has these lines to disable password-based authentication:
+```
+...
+PubkeyAuthentication yes
+...
+PasswordAuthentication no
+...
 ```
 
 Linux leaves 5% of space unused in all installed disk partitions.  In the case of my 2 TB drive that's just too much, so, diminish number of reserved space with:
@@ -147,10 +167,9 @@ Git clone & checkout the correct version & compile:
 ```
 git clone https://github.com/ethereum/go-ethereum.git
 cd go-ethereum
-git checkout v1.10.1
+git checkout v1.10.12
 make
 ```
-
 
 ## Scripts
 
@@ -161,16 +180,13 @@ These have no warranty!  :)
 ├── console.bash            # start javascript console
 ├── deinstall_daemon.bash   # deinstalls geth systemd daemon
 ├── ethlogs.bash            # follows systemd logs
-├── geth.service            
+├── geth.service            # systemd service file
 ├── install_daemon.bash     # install geth as a systemd daemon
-├── loader.js
+├── loader.js               # some helper javacrap
 ├── mount_secret.bash       # mount encrypted encfs directory
-├── recover.bash            # recover with rsync from external disk # WARNING: OVERWRITERS your .ethereum folder
-|                             => keystore/accounts.  Write a better version yourself if you feel like it
-├── rungeth.bash            # run geth interactively
-├── rungeth_verbose.bash
-├── save2.bash              # just rsync to external disk
-├── save.bash               # stop geth daemon, rsync to external disk # EDIT THIS FILE
+├── recover.bash            # recover with rsync from external disk # WARNING: MIGHT OVERWRITE STUFF: NO WARRANTY
+├── rungeth.bash            # runs geth interactively
+├── save.bash               # backup blockchain & keystore to an external disk # YOU NEED TO EDIT THIS FILE
 └── somelogs.bash           # shows some geth daemon logs
 ```
 
@@ -191,7 +207,7 @@ Your SDD is encrypted, but it is still a good idea to have an extra layer of sec
 
 ### Running geth as a daemon
 
-In the case you want to run geth as a systemd daemon.  I used to do this, but currently I actually prefer to run it interactively in a separate terminal.
+In the case you want to run geth as a systemd daemon-
 
 You can use this script to daemonize geth as a systemctl background process. Run this script **only once**:
 ```
@@ -291,6 +307,28 @@ eth.pendingTransactions
 ```
 
 For normal tx operations (no complicated/costly smart contracts involved), a gaslimit of 24000 units is a good value. 
+
+## Web3.py Quickstart
+
+*please use Python 3.7+*.  If you need to update your system's python interpreter, here is a nice [tutorial](https://linuxize.com/post/how-to-install-python-3-8-on-ubuntu-18-04/#installing-python-38-on-ubuntu-from-source)
+
+Not fond of Javascript?  Neither am I, so let's go Python and install [web3.py](https://github.com/ethereum/web3.py):
+```
+python3 -m venv ethenv
+source ethenv/bin/activate
+pip install ipython
+git clone https://github.com/ethereum/web3.py.git
+cd web3.py
+pip install -e .
+deactivate
+```
+
+Use web3:
+```
+source ethenv/bin/activate
+ipython
+from web3 import *
+```
 
 ## GnuPG etc.
 

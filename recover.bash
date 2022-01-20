@@ -1,4 +1,6 @@
 #!/bin/bash
+echo WARNING: NOT UP TO DATE
+exit
 echo stopping geth
 systemctl --user stop geth.service
 echo get stopped, recovering .ethereum directory from hdd
