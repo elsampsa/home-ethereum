@@ -24,11 +24,11 @@ The current version you should use is **v1.10.21**.  Please keep an eye on [rele
 
 You don't want to recycle your old "ultrabook" laptop for this one, as they typically have an expensive NVME circuit working as the SSD drive, and no physical space / slot for inserting "commodity" SSD drives.
 
-Prefer a larger gaming laptop with extendable SSD/HDD docks where you can install some cheap commodity SSDs and HHDs.
+Prefer a larger gaming laptop with extendable SSD/HDD docks where you can install some cheap commodity SSDs and HDDs.
 
 Keep in mind that **SSD is a must** for geth to work.
 
-I cleaned the dust from an older Asus ROG (Republic of Gamers) laptop that has two docs for internal SSD/HHDs and recycled it for this purpose.
+I cleaned the dust from an older Asus ROG (Republic of Gamers) laptop that has two docs for internal SSD/HDDs and recycled it for this purpose.
 
 The SSD I'm using is a "Crucial BX500" 2TB drive, with an off-the-shelf price of around 200 EUR.
 
