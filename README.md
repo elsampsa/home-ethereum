@@ -6,12 +6,13 @@
 
 My checklist and scripts for running [go ethereum client](https://github.com/ethereum/go-ethereum), aka "geth" on a laptop @ the comfort of your home.
 
-The current version you should use is **v1.10.12**.  For release notes, see [here](https://blog.ethereum.org/2021/03/08/ethereum-berlin-upgrade-announcement/).
+The current version you should use is **v1.10.21**.  Please keep an eye on [release notes](https://github.com/ethereum/go-ethereum/releases) and on the [ethereum blog](https://blog.ethereum.org/).
 
 - 13.8.2020, a full sync took more than a month to sync and reach the last block, while the blockchain takes around 850 GB of space.
 - 9.3.2021, the blockchain takes ~ 1.2 TB of space.
 - 17.4.2021, the blockchain takes ~ 1.3 TB of space.
 - 20.1.2022, removed blockchain & did a "snap" sync.  It was blazing fast & now blockchain just needs a few hundred gigas!  Using txlookuplimit=0 was a bad idea: it blows up the state trie
+- 14.8.2022, golang 1.18.5 with geth v1.10.21 seems to work fine
 
 ![image](inaction.png)
 
@@ -145,7 +146,7 @@ sudo swapon --show
 
 ## Install go
 
-Download a recent version of go from [here](https://golang.org/dl/)
+Download a recent **binary** version of go from [here](https://golang.org/dl/)
 
 Suppose that goes to your ``Downloads/`` folder.
 
@@ -167,9 +168,11 @@ Git clone & checkout the correct version & compile:
 ```
 git clone https://github.com/ethereum/go-ethereum.git
 cd go-ethereum
-git checkout v1.10.12
+git pull
+git checkout v1.10.21
 make
 ```
+Keep an eye on the [releases page](https://github.com/ethereum/go-ethereum/releases) & do git pull & checkout a certain version periodically.  Remember to update your golang every now & then.
 
 ## Scripts
 
@@ -207,9 +210,7 @@ Your SDD is encrypted, but it is still a good idea to have an extra layer of sec
 
 ### Running geth as a daemon
 
-In the case you want to run geth as a systemd daemon-
-
-You can use this script to daemonize geth as a systemctl background process. Run this script **only once**:
+In the case you want to run geth as a systemd daemon you can use this script to daemonize geth as a systemctl background process. Run this script **only once**:
 ```
 ./install_daemon.bash
 ```
@@ -332,7 +333,9 @@ from web3 import *
 
 ## GnuPG etc.
 
-The best cryptoexchange - Kraken - only sends you encrypted emails.
+*not necessary as of 2022*
+
+Legacy stuff: the best cryptoexchange - Kraken - used to send you only encrypted emails.
 
 - Install GnuPG and maybe ``kgpg`` (GUI for GnuPG) as well.
 - If you have one, transfer your ``.gnupg`` folder with the [correct permissions](https://superuser.com/questions/954509/what-are-the-correct-permissions-for-the-gnupg-enclosing-folder-gpg-warning)
@@ -353,7 +356,7 @@ solved the issue.
 
 ## Copyright
 
-Sampsa Riikonen, 2020-2021
+Sampsa Riikonen, 2020-2022
 
 ## License
 
